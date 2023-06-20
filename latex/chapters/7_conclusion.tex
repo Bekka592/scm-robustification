@@ -1,0 +1,77 @@
+\chapter{Discussion and Conclusion}\label{ch:conclusion}
+% What was done?, What are the outcomes?
+
+% general
+My extended SCM is capable of handling numerical, as well as nominal, features effortlessly,
+which greatly expands the ensemble of the algorithm's possible use cases.
+In general, I optimized the algorithm regarding many different aspects, like the optimal placement
+of thresholds or the appropriate utilization of tie situations.
+Cross-validation experiments revealed that these efforts indeed payed off and resulted in a robustified SCM,
+that is able to generate classifiers that are both, sparse and high-performant on independent test samples.
+
+% optimizations der features waren super
+The short computation times of my optimized algorithm moreover enable it to process even high-dimensional genetic data sets.
+In this use case the SCM's ability to filter crucial features from irrelevant ones and form those
+into easily interpretable decision rules is strongly needed, in order to provide understandable scientific insights.
+In the end, my \(SCM_{DNF}\) was capable of identifying the differences between various subtypes of cancer
+from the TCGA with an average accuracy of 91.52\%.
+
+% DNF
+The use of a disjunction of conjunctions, as done by the \(SCM_{DNF}\), turned out to be especially helpful 
+on low-dimensional data sets.
+Data sets with disjunct decision regions, like \autoref{fig:twoReg} and \autoref{fig:crossP},
+particularly benefit from the extended \(SCM_{DNF}\), as those can now be classified with models, that
+truly fit their underlying structures.
+Yet also the UCI data in \autoref{sec:uci} benefit from the use of multiple disjunct conjunctions.
+In the specific case of the `chess' data set, the average number of conjunctions per classification rule being 2.137 indicates,
+that the second conjunction within the DNF is quite necessary to obtain good classification results here.
+
+% on high-dimensional data
+Even on high-dimensional data, like in \autoref{sec:geneticData}, the \(SCM_{DNF}\) can often outperform the \(SCM_{conj}\).
+However usually only a very small improvement can be achieved here and a suitable parameter 
+configuration, especially the appropriate choice of the \(minConjSize\), is required.
+In case of a too low minimum conjunction size, the use of a disjunction of conjunctions
+actually impairs the classifier's generalizability.
+On the other hand side, a too high \(minConjSize\) leads to a 
+resulting classification rule that actually consists of only a single conjunction and
+therefore the same result as the simpler \(SCM_{conj}\).
+In case of the RNA-seq data sets, this consideration resulted in the selection of \(minConjSize = 10\),
+leading to slightly improved accuracies as examined in \autoref{tab:geneMCS} and \autoref{tab:geneP}.
+Yet, the \(SCM_{DNF}\) provides no major improvement to the model's accuracy here and in five
+of the seven data sets the possibility of the \(SCM_{DNF}\) to use multiple conjunctions is
+not really used at all (see \autoref{tab:geneCompact}).
+This can be reasoned by the vast amount of features to choose the optimal base classifiers from and
+by the fact, that gene expression data usually does not contain disjunct decision regions.
+In general, two different cancer types will either have similar expression levels for a \(gene_a\)
+or one type will a higher expression than the other.
+Therefore rules like `\texttt{IF \(gene_a < \alpha\) or \(gene_a > \beta\) THEN class 1}' do usually not occur in this use case.
+
+\begin{table}[ht]
+    \centering
+    \caption{Average amounts of utilized rays, features and conjunctions within the classification rules of the final \(SCM_{DNF}\).}\label{tab:geneCompact}
+    \begin{tabular}{llll}
+            \toprule
+            data set & |rays| & |features| & |conjunctions| \\
+            \midrule
+            KICH\_vs\_KIRC & 4.19 & 4.19 & 1.058 \\
+            KICH\_vs\_KIRP & 3.84 & 3.84 & 1.045 \\
+            KIRP\_vs\_KIRC & 10.34 & 10.34 & 2.033 \\
+            CHOL\_vs\_LIHC & 3.13 & 3.13 & 1.0 \\
+            CHOL\_vs\_PAAD & 2.1 & 2.1 & 1.0 \\
+            LIHC\_vs\_PAAD & 1.85 & 1.85 & 1.0 \\
+            COAD\_vs\_READ & 6.73 & 6.73 & 1.778 \\
+            \bottomrule
+    \end{tabular}
+\end{table}
+
+% conclusion
+However, even a classifier resulting from the \(SCM_{DNF}\), that consists of only one conjunction,
+does in general still match the classifier of an equivalent \(SCM_{conj}\).
+Meaning, that the \(SCM_{DNF}\) does represent a good chance for the set covering machine
+to classify even complex scattered data, yet still delivers a feasible result, i.e.\ the one
+of the \(SCM_{conj}\), in case of only one decision region.
+The major downside of the \(SCM_{DNF}\) however stays the additional effort that needs to
+be put in the careful adjustment of the \(minConjSize\) hyper-parameter, that is not needed
+when using a \(SCM_{conj}\).
+Yet, if done properly, the \(SCM_{DNF}\) does in general not only have a superior accuracy on its training
+data, but also the same, or often an even higher, generalizability than the equivalent \(SCM_{conj}\).

@@ -1,0 +1,51 @@
+\chapter{Introduction}\label{ch:introduction}
+
+% Motivation
+The set covering machine, also known as `set cover machine' or `SCM', is designed to be a `general-purpose learning machine'~\citep[p.727]{marchand02}
+for binary classification problems.
+In this thesis I want to further extend and optimize the SCM, in order to obtain a robust algorithm for the classification of high-dimensional gene expression data.
+
+% overall goal: robustification
+Per definition, robust algorithms are supposed to provide reasonable models,
+even for input data with a certain degree of variations and erroneous values~\citep{burgard},
+caused for example by measuring errors that often occur in real-world data sets.
+While a robustification is often done by using the paradigm of linear programming to approach the problem, as in~\cite{hussain},
+I cannot rely on hard error bound and will therefore approach the robustification from a more general point of view.
+Here, the SCM is robustified mainly by the introduction of disjunctive normal form formulas as a
+\textbf{way to construct more complex decision rules}.
+Classification rules in disjunctive normal form are created by linking the logical ANDs, i.e.\ the conjunctions, with a single logical OR, i.e.\ a disjunction,
+and therefore building a disjunction of conjunctions.
+This extension seems especially promising for enhancing the classification of disjunctly scattered data.
+Moreover the SCM is extended so it can handle not only numerical, but also categorical, features.
+This \textbf{widens the potential application field of the SCM} by a lot, as data sets with categorical or even mixed
+feature types can now also be processed.\
+This extension was done in other research before, however, I will introduce some new modifications to further improve
+the algorithm's performance on the various feature types.
+
+The final classification rules will be in the form of, for example, `\texttt{IF (x1 < 3 AND x5 = `red') OR (x23 > 7.2 AND x2 = true) THEN class 1 ELSE class 0}'\\
+and shall provide accurate predictions of the sample's labels without overfitting the test data.
+Such an overfitting happens when the model perfectly covers the training data, yet is generalizable only
+to a very small degree and therefore has a high risk of misclassifying independent test samples~\citep{drouin16}.
+In the end, I want to be able to conduct a precise binary classification of oncological RNA sequencing data using the modified SCM.\
+This use case scenario usually represents a major challenge for classification algorithms, as
+gene expression data has an extremely high feature dimension, while at the same time, often only few samples are available.
+Yet, the SCM can actually work comparatively well under such circumstances
+and is able to perform a drastic feature reduction, in order to produce a compact and easy to interpret classification rule.
+
+% Thesis' structure/ Overview
+The thesis is structured as follows.
+After introducing the concept of the set covering machine in \autoref{ch:scm},
+the SCM is implemented in Julia and subsequently performance optimized in \autoref{ch:julia}, in order to
+make the algorithm accessible, even for large data sets.
+In \autoref{ch:dnf} and \autoref{ch:varFeat} the SCM is then extended and those
+extensions are optimized optimized regarding both, the result's performance and the run time performance.
+In these early chapters, artificially generated data sets are used exclusively to reason any decisions on evaluating and optimizing the algorithms.
+Visualizations are provided for two-dimensional example sets.
+Each of the data sets represents a specific scenario, such as two completely disjunct sample regions.
+However, to test the algorithm's run time, randomly generated data was used, where each of the 200 samples is defined
+as a vector \(X \in \lbrace0,1\rbrace^{50,000}\).
+In \autoref{ch:evaluation} a total of nine data sets, that originate from
+the UCI machine learning repository, as well as the cancer genome atlas, are introduced.
+With those, a final evaluation of the modified SCM is executed and it is determined whether the algorithm
+is actually capable of generating accurate and generalizable decision rules for real-world problems,
+that separate crucial features from unimportant ones.

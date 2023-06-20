@@ -1,0 +1,107 @@
+\documentclass[uulm-release-print]{template/thesis-uulm}
+% options:
+% - uulm-draft: show to-do-notes, links, linenumbers hide label names
+% - uulm-draft-verbose: show to-do-notes, links, linenumbers, label names
+% - uulm-release-electronic: show links, hide to-do-notes, linenumbers, label names
+% - uulm-release-print hide everything
+
+% workaround for some stupid error in combination with IEEEtran, bibtex and babel
+\makeatletter
+\def\markboth#1#2{%
+  \def\leftmark{\@IEEEcompsoconly{\sffamily}#1}%
+  \def\rightmark{\@IEEEcompsoconly{\sffamily}#2}}
+\makeatother
+
+\usepackage[english]{babel}
+\usepackage{natbib}
+\usepackage{verbatim}
+
+\usepackage{xcolor}
+\usepackage{xfrac}
+
+\usepackage{multirow}
+\usepackage{float}
+
+\usepackage{algorithm2e}
+\usepackage[theme=default-plain]{template/jlcode} % https://github.com/wg030/jlcode
+
+\usepackage{amsthm} % for theorems, lemmas and proofs
+\usepackage{amsmath}
+\newtheorem{lemma}{Lemma} % if buggy, use \newtheorem{theorem}{Theorem}[section] \newtheorem{lemma}[theorem]{Lemma} instead or \newtheorem{lem}{Lemma}
+
+\KOMAoptions{bibliography=totoc, listof=totoc}
+
+% Capitalized Chapters etc
+\renewcommand{\chapterautorefname}{Chapter}
+\renewcommand{\sectionautorefname}{Section}
+\renewcommand{\subsectionautorefname}{Subsection}
+\renewcommand{\subsubsectionautorefname}{Subsubsection}
+\renewcommand{\figureautorefname}{Figure}
+\renewcommand{\tableautorefname}{Table}
+\renewcommand{\lstlistingname}{Listing}
+\renewcommand{\algorithmautorefname}{Algorithm}
+
+% Fonts
+\renewcommand{\sfdefault}{phv}
+\renewcommand{\rmdefault}{phv}
+\renewcommand{\ttdefault}{pcr}
+
+% using - instead of * in itemize environment
+\renewcommand\labelitemi{---}
+
+\author{Rebekka Roßberg}
+\title{Robustifying the Set Covering Machine with Disjunctive Normal Forms\\and Nominal Features}
+\email{rebekka.rossberg@uni-ulm.de}
+\matnr{1049562}
+\degree{Software Engineering}
+\type{Bachelor's Thesis}
+\jahr{2022}
+\gutachterA{Prof.\ Dr.\ Hans A. Kestler}
+\betreuer{Prof.\ Dr.\ Hans A. Kestler}
+
+\begin{document}
+
+\frontmatter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagenumbering{roman}
+\begin{nolinenumbers}
+  \maketitle
+  \copyrightpage%
+\end{nolinenumbers}
+
+\setstretch{1.2}
+
+\begin{nolinenumbers}
+  \tableofcontents
+\end{nolinenumbers}
+
+\mainmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagenumbering{arabic}
+
+\include{chapters/1_introduction}
+\include{chapters/2_theSCM}
+\include{chapters/3_julia}
+\include{chapters/4_dnf}
+\include{chapters/5_variousFeatureTypes}
+\include{chapters/6-1_evaluation}
+\include{chapters/6-2_uci}
+\include{chapters/6-3_geneExpressions}
+\include{chapters/7_conclusion}
+
+\backmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bibliographystyle{unsrtnat}
+\bibliography{bibliography}
+
+\listoffigures
+\listoftables
+
+\appendix
+\include{chapters/appendix}
+
+\cleardoublepage%
+\clearpairofpagestyles%
+\declaration%
+
+\end{document}
